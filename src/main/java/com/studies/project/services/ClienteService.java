@@ -5,31 +5,24 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.studies.project.domain.Categoria;
-import com.studies.project.repositories.CategoriaRepository;
+import com.studies.project.domain.Cliente;
+import com.studies.project.repositories.ClienteRepository;
 import com.studies.project.services.exceptions.ObjectNotFoundException;
 
-
 @Service
-public class CategoriaService {
+public class ClienteService {
 
 	@Autowired
-	private CategoriaRepository repository;
-	
-	public Categoria buscar(Integer id) throws ObjectNotFoundException{
-		
-		Optional<Categoria> obj = repository.findById(id);
-		
+	private ClienteRepository repository;
+
+	public Cliente buscaPorId(Integer id) throws ObjectNotFoundException{
+		Optional<Cliente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto de identidicador "
 					+ id
 					+ " e tipo " 
-					+ Categoria.class.getName()
-					+ " não foi encontrado."
-			)
-		);
-		
-		
+					+ Cliente.class.getName()
+					+ " não foi encontrado."));
 	}
 	
 }
