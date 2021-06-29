@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.studies.project.domain.enums.TipoCliente;
 
 import lombok.EqualsAndHashCode;
@@ -43,7 +43,6 @@ public class Cliente implements Serializable{
 	private String CPFouCNPJ;
 	private Integer tipo; 
 
-	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -55,6 +54,7 @@ public class Cliente implements Serializable{
 	private Set<String> telefones = new HashSet<>();
 	
 	@OneToMany(mappedBy = "cliente")
+	@JsonIgnore
 	private List<Pedido> pedidos = new ArrayList<>();
 
 	

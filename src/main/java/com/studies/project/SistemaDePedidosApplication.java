@@ -13,6 +13,7 @@ import com.studies.project.domain.Cidade;
 import com.studies.project.domain.Cliente;
 import com.studies.project.domain.Endereco;
 import com.studies.project.domain.Estado;
+import com.studies.project.domain.ItemPedido;
 import com.studies.project.domain.Pagamento;
 import com.studies.project.domain.PagamentoComBoleto;
 import com.studies.project.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.studies.project.repositories.CidadeRepository;
 import com.studies.project.repositories.ClienteRepository;
 import com.studies.project.repositories.EnderecoRepository;
 import com.studies.project.repositories.EstadoRepository;
+import com.studies.project.repositories.ItemPedidoRepository;
 import com.studies.project.repositories.PagamentoRepository;
 import com.studies.project.repositories.PedidoRepository;
 import com.studies.project.repositories.ProdutoRepository;
@@ -59,6 +61,9 @@ public class SistemaDePedidosApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;	
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -117,6 +122,19 @@ public class SistemaDePedidosApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.0, 2, 80.0);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.0, 1, 800.0);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 	

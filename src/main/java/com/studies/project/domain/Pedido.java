@@ -1,7 +1,11 @@
 package com.studies.project.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,7 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,6 +37,8 @@ public class Pedido implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instant;
 	
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
@@ -42,11 +52,24 @@ public class Pedido implements Serializable{
 	@JoinColumn(name = "endereco_de_entrega")
 	private Endereco enderecoDeEntrega;
 
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Pedido(Integer id, Date instant, Cliente cliente, Endereco enderecoDeEntrega) {
 		this.id = id;
 		this.instant = instant;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+	
+	@JsonIgnore
+	public List<Produto> getProdutos(){
+		List<Produto> produtos = new ArrayList<>();
+		for(ItemPedido ip : itens) {
+			produtos.add(ip.getProduto());
+		}
+		return produtos;
 	}
 	
 	
